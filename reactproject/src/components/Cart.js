@@ -26,12 +26,9 @@ export default function Cart(props) {
     dispatch(cartActions.addItemToCart(item));
   };
 
-  useEffect(() => {
- 
-  }, []);
+  useEffect(() => {}, []);
 
   const deleteItem = (item) => {
-   
     dispatch(cartActions.deleteItemFromCart(item.id));
   };
   return (
@@ -67,9 +64,10 @@ export default function Cart(props) {
                     </button>
                   </TableCell>
 
-                  
-                  <TableCell width="40">{row.quantity}</TableCell>
-                  <TableCell align="right" width="20">
+                  <TableCell width="80" align="center">
+                    {row.quantity}
+                  </TableCell>
+                  <TableCell align="left" width="20">
                     <button
                       type="button"
                       onClick={() => removeItemHandler(row)}
@@ -87,14 +85,7 @@ export default function Cart(props) {
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ fontWeight: "bold", fontSize: "20px" }}
-                >
+                <TableCell sx={{ fontWeight: "bold", fontSize: "20px" }}>
                   Total Amount: {cartPrice}/-
                 </TableCell>
               </TableRow>

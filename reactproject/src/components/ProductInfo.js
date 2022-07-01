@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { updateCart } from "../redux/Counter";
+import { cartActions } from "../redux/Counter";
 import { isAdmin } from "../service/Auth";
 
 export default function ProductInfo() {
@@ -27,33 +27,12 @@ export default function ProductInfo() {
         console.log(err);
       });
   }, []);
-  const addToCart = (id) => {
-    getProductsbyId(id)
-      .then((res) => {
-        if (res) {
-          if (localStorage.getItem("product") != undefined) {
-            let arr = JSON.parse(localStorage.getItem("product"));
-            if (arr.some((items) => id == items._id)) {
-              alert("product already added");
-            } else {
-              arr.push(res.data);
-              localStorage.setItem("product", JSON.stringify(arr));
-              alert("product added");
-              dispatch(updateCart());
-            }
-          } else {
-            let arr = [];
-            arr.push(res.data);
-            localStorage.setItem("product", JSON.stringify(arr));
-            alert("product added");
-            dispatch(updateCart());
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+  const addItemHandler = (item) => {
+    dispatch(cartActions.addItemToCart(item));
+    alert("product added to cart");
   };
+
   return (
     <Container>
       <Card sx={{ maxWidth: 345, margin: "40px auto" }}>
@@ -70,7 +49,7 @@ export default function ProductInfo() {
           <Typography variant="body2" color="text.secondary">
             {proInfo.description}
           </Typography>
-          <br/>
+          <br />
           <Typography
             variant="body2"
             color="text.secondary"
@@ -88,7 +67,7 @@ export default function ProductInfo() {
         </CardContent>
         {!isAdmin() && (
           <CardActions>
-            <Button size="small" onClick={() => addToCart(proInfo._id)}>
+            <Button size="small" onClick={() => addItemHandler(proInfo)}>
               Add to cart
             </Button>
           </CardActions>

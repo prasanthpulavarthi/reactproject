@@ -1,28 +1,33 @@
-import React,{useState} from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { userSignUp } from '../service/Auth';
-import {useNavigate} from 'react-router-dom'
+import React, { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { userSignUp } from "../service/Auth";
+import { useNavigate } from "react-router-dom";
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -30,26 +35,32 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const [state,setState]=useState({firstName:'',lastName:'',password:'',email:'',contactNumber:''})
-  const navigate=useNavigate();
-  const handler=(event)=>{
-    let {name,value}=event.target;
-    setState({...state,[name]:value})
-  }
+  const [state, setState] = useState({
+    firstName: "",
+    lastName: "",
+    password: "",
+    email: "",
+    contactNumber: "",
+  });
+  const navigate = useNavigate();
+  const handler = (event) => {
+    let { name, value } = event.target;
+    setState({ ...state, [name]: value });
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     userSignUp(state)
-    .then(res=>{
-      if(res.data.err==0){
-       navigate("/");
-      }
-      if(res.data.err==1){
-        alert(res.data.msg)
-      }
-    })
-    .catch(err=>{
-      console.log(err);
-    })
+      .then((res) => {
+        if (res.data.err == 0) {
+          navigate("/");
+        }
+        if (res.data.err == 1) {
+          alert(res.data.msg);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -59,18 +70,23 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -124,13 +140,11 @@ export default function SignUp() {
                   fullWidth
                   name="contactNumber"
                   label="Contact Number"
-                 
                   id="contact"
                   autoComplete="contact"
                   onChange={handler}
                 />
               </Grid>
-             
             </Grid>
             <Button
               type="submit"
@@ -142,7 +156,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={() => navigate("/")}>
                   Already have an account? Sign in
                 </Link>
               </Grid>

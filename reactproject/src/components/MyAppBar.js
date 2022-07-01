@@ -9,14 +9,16 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn, isAdmin, doLogout } from "../service/Auth";
 import { Badge } from "@mui/material";
-import { useSelector } from "react-redux/es/exports";
+import { useSelector } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputBase } from "@mui/material";
 
 export default function MyAppBar() {
-  const count = useSelector((state) => state.cart.count);
+  const count = useSelector((state) => state.cart.totalQuantity);
+
   const [filter, setFilter] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
     let searchParams = new URLSearchParams();
     if (filter) {
@@ -47,9 +49,9 @@ export default function MyAppBar() {
           {isLoggedIn() ? (
             <>
               <div>
-                <SearchIcon style={{'verticalAlign': 'middle'}} />
+                <SearchIcon style={{ verticalAlign: "middle" }} />
                 <InputBase
-                  style={{'color':'#fff'}}
+                  style={{ color: "#fff" }}
                   placeholder="Search"
                   value={filter}
                   onChange={(event) => setFilter(event.target.value)}

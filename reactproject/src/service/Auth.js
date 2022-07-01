@@ -1,6 +1,8 @@
 import { MAIN_API } from "../env";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { clearDataInStorage } from "../redux/Counter";
+
 function userSignUp(data) {
   return axios.post(`${MAIN_API}users`, data);
 }
@@ -30,6 +32,7 @@ function isAdmin() {
 function doLogout() {
   localStorage.removeItem("_token");
   //localStorage.removeItem("userdetails");
+  clearDataInStorage();
   window.location = "/";
 }
 

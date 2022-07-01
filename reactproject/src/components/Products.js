@@ -16,7 +16,7 @@ import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { updateCart } from "../redux/Counter";
+import { cartActions } from "../redux/Counter";
 import { isAdmin } from "../service/Auth";
 
 import Pagination from "@mui/material/Pagination";
@@ -36,7 +36,7 @@ export default function Products() {
   const pagesCount = Math.ceil(proData.length / itemPerPage);
 
   useEffect(() => {
-    location.search && searchProducts(location.search).then((res) => {
+    searchProducts(location.search).then((res) => {
       if (res.data.err == 0) {
         setData(res.data.prodata);
       }
@@ -76,32 +76,9 @@ export default function Products() {
     getPageRecords(pageNumber);
   };
 
-  const addToCart = (id) => {
-    getProductsbyId(id)
-      .then((res) => {
-        if (res) {
-          if (localStorage.getItem("product") != undefined) {
-            let arr = JSON.parse(localStorage.getItem("product"));
-            if (arr.some((item) => id == item._id)) {
-              alert("product already exist in cart");
-            } else {
-              arr.push(res.data);
-              localStorage.setItem("product", JSON.stringify(arr));
-              alert("product added to cart");
-              dispatch(updateCart());
-            }
-          } else {
-            let arr = [];
-            arr.push(res.data);
-            localStorage.setItem("product", JSON.stringify(arr));
-            alert("product added");
-            dispatch(updateCart());
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const addItemHandler = (item) => {
+    dispatch(cartActions.addItemToCart(item));
+    alert("product added to cart");
   };
 
   return (
@@ -109,7 +86,7 @@ export default function Products() {
       <h2>Products</h2>
       <Grid container spacing={2}>
         {pageRecords.map((item) => (
-          <Grid item xs={4} key={item._id}>
+          <Grid item xs={4} key={item._id} id={item._id}>
             <Card sx={{ maxWidth: 345, marginTop: "10px" }}>
               <CardMedia
                 component="img"
@@ -138,7 +115,7 @@ export default function Products() {
                     Delete
                   </Button>
                 ) : (
-                  <Button size="small" onClick={() => addToCart(item._id)}>
+                  <Button size="small" onClick={() => addItemHandler(item)}>
                     Add to cart
                   </Button>
                 )}
@@ -147,7 +124,7 @@ export default function Products() {
           </Grid>
         ))}
       </Grid>
-      <div style={{'display':'flex', 'justifyContent': 'center'}}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Pagination count={pagesCount} onChange={handleChange}></Pagination>
       </div>
     </Container>
